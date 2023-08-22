@@ -1,4 +1,18 @@
 cc_import(
+    name = "glfw_win64_libs",
+    shared_library = "lib-static-ucrt/glfw3.dll",
+    interface_library = "lib-static-ucrt/glfw3dll.lib",
+)
+
+cc_library(
+    name = "glfw_win64",
+    hdrs = glob(["include/GLFW/*.h"]),
+    strip_include_prefix = "include",
+    deps = [":glfw_win64_libs"],
+    visibility = ["//visibility:public"],
+)
+
+cc_import(
     name = "glfw_macos_libs",
     static_library = "lib-universal/libglfw3.a",
     shared_library = "lib-universal/libglfw.3.dylib",

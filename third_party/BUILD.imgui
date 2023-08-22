@@ -12,6 +12,7 @@ cc_library(
     strip_include_prefix = "backends",
     deps = [":core"] + select({
         "@platforms//os:osx": ["@glfw_macos//:glfw_macos"],
+        "@platforms//os:windows": ["@glfw_win64//:glfw_win64"],
     }),
     visibility = ["//visibility:public"],
 )
