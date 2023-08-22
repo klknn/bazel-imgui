@@ -13,6 +13,7 @@ http_archive(
     url = "https://github.com/glfw/glfw/releases/download/3.3.8/glfw-3.3.8.bin.MACOS.zip",
     strip_prefix = "glfw-3.3.8.bin.MACOS",
     build_file = "@//third_party:BUILD.glfw",
+    sha256 = "dc1fc3d3e7763b9de66f7cbb86c4ba3a82118441a15f64045a61cfcdedda88d2",
 )
 
 http_archive(
