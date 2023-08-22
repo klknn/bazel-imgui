@@ -31,3 +31,15 @@ cc_library(
     deps = [":glfw_macos_libs"],
     visibility = ["//visibility:public"],
 )
+
+cc_import(
+    name = "glfw_linux_lib",
+    shared_library = "lib/x86_64-linux-gnu/libglfw.so"
+)
+
+cc_library(
+    name = "glfw_linux",
+    hdrs = glob(["include/GLFW/*.h"]),
+    deps = [":glfw_linux_lib"],
+    visibility = ["//visibility:public"],
+)
