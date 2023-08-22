@@ -6,5 +6,5 @@
 
 ## History
 
-- 2023/08/23: Added GLFW+OpenGL3 example for win/osx (using the official binary) and linux (using the official source and `apt install libx11-dev libxi-dev libxinerama-dev libxcursor-dev`).
+- 2023/08/23: Added GLFW+OpenGL3 example for win, osx and linux (requires `apt install libx11-dev libxi-dev libxinerama-dev libxcursor-dev`) building from the GLFW official source files.
 - 2023/08/22: Added win32 backends.

@@ -10,17 +10,7 @@ cc_library(
     hdrs = ["backends/imgui_impl_glfw.h"],
     srcs = ["backends/imgui_impl_glfw.cpp"],
     strip_include_prefix = "backends",
-    deps = [":core"] + select({
-        "@platforms//os:osx": ["@glfw_macos//:glfw_macos"],
-        "@platforms//os:windows": ["@glfw_src//:glfw"],
-        # "@platforms//os:windows": ["@glfw_win64//:glfw_win64"],
-        "@platforms//os:linux": ["@glfw_src//:glfw"],
-        # "@platforms//os:linux": ["@glfw_linux//:glfw_linux"],
-    }),
-    linkopts = select({
-        "@platforms//os:linux": ["-lX11"],
-        "//conditions:default": [],
-    }),
+    deps = [":core", "@glfw_src//:glfw"],
     visibility = ["//visibility:public"],
 )
 

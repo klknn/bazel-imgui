@@ -1,3 +1,4 @@
+# See also https://github.com/glfw/glfw/blob/3.3.8/src/CMakeLists.txt
 WIN32_DEFINES = [
     "_GLFW_WIN32",
     "UNICODE",
@@ -51,38 +52,72 @@ LINUX_SRCS = [
     "src/xkb_unicode.c",
 ]
 
-LINUX_LINKOPTS = []
+LINUX_LINKOPTS = ["-lX11"]
+
+COMMON_HDRS = [
+    "include/GLFW/glfw3.h",
+    "include/GLFW/glfw3native.h",
+    "src/egl_context.h",
+    "src/internal.h",
+    "src/osmesa_context.h",
+    "src/mappings.h",
+]
+
+COMMON_SRCS = [
+    "src/context.c",
+    "src/egl_context.c",
+    "src/init.c",
+    "src/input.c",
+    "src/osmesa_context.c",
+    "src/monitor.c",
+    "src/vulkan.c",
+    "src/window.c",
+]
 
 cc_library(
     name = "glfw_src",
-    hdrs = [
-        "include/GLFW/glfw3.h",
-        "include/GLFW/glfw3native.h",
-        "src/egl_context.h",
-        "src/internal.h",
-        "src/osmesa_context.h",
-        "src/mappings.h",
-    ] + select({
-        "@bazel_tools//src/conditions:windows": WIN32_HDRS,
-        "@bazel_tools//src/conditions:linux_x86_64": LINUX_HDRS,
+    hdrs = COMMON_HDRS + select({
+        "@platforms//os:windows": WIN32_HDRS,
+        "@platforms//os:linux": LINUX_HDRS,
     }),
-    srcs = [
-        "src/context.c",
-        "src/egl_context.c",
-        "src/init.c",
-        "src/input.c",
-        "src/osmesa_context.c",
-        "src/monitor.c",
-        "src/vulkan.c",
-        "src/window.c",
-    ] + select({
-        "@bazel_tools//src/conditions:windows": WIN32_SRCS,
-        "@bazel_tools//src/conditions:linux_x86_64": LINUX_SRCS,
+    srcs = COMMON_SRCS + select({
+        "@platforms//os:windows": WIN32_SRCS,
+        "@platforms//os:linux": LINUX_SRCS,
     }),
     defines = select({
-        "@bazel_tools//src/conditions:windows": WIN32_DEFINES,
-        "@bazel_tools//src/conditions:linux_x86_64": LINUX_DEFINES,
+        "@platforms//os:windows": WIN32_DEFINES,
+        "@platforms//os:linux": LINUX_DEFINES,
     }),
+    linkopts = select({
+        "@platforms//os:windows": WIN32_LINKOPTS,
+        "@platforms//os:linux": LINUX_LINKOPTS,
+    }),
+)
+
+COCOA_HDRS = [
+    "src/cocoa_platform.h",
+    "src/cocoa_joystick.h",
+    "src/posix_thread.h",
+    "src/nsgl_context.h",
+]
+
+COCOA_SRCS = [
+    "src/cocoa_init.m",
+    "src/cocoa_joystick.m",
+    "src/cocoa_monitor.m",
+    "src/cocoa_window.m",
+    "src/cocoa_time.c",
+    "src/posix_thread.c",
+    "src/nsgl_context.m",
+]
+
+objc_library(
+    name = "glfw_cocoa",
+    defines = ["_GLFW_COCOA"],
+    copts = ["-fno-common", "-fno-objc-arc"],
+    hdrs = COMMON_HDRS + COCOA_HDRS,
+    srcs = COMMON_SRCS + COCOA_SRCS,
+    linkopts = ["-framework Cocoa", "-framework IOKit"],
 )
 
 cc_library(
@@ -91,11 +126,10 @@ cc_library(
         "include/GLFW/glfw3.h",
         "include/GLFW/glfw3native.h",
     ],
-    linkopts = select({
-        "@bazel_tools//src/conditions:windows": WIN32_LINKOPTS,
-        "@bazel_tools//src/conditions:linux_x86_64": LINUX_LINKOPTS,
+    deps = select({
+        "@platforms//os:osx": [":glfw_cocoa"],
+        "//conditions:default": [":glfw_src"],
     }),
-    deps = [":glfw_src"],
     strip_include_prefix = "include",
     visibility = ["//visibility:public"],
 )
