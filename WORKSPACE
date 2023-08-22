@@ -15,6 +15,8 @@ http_archive(
     build_file = "@//third_party:BUILD.glfw",
 )
 
+# In windows, you can use this instead of `glfw_src`.
+# Replace @glfw_src//:glfw in //third_party/BUILD.imgui with @glfw_win64//:glfw_win64.
 http_archive(
     name = "glfw_win64",
     url = "https://github.com/glfw/glfw/releases/download/3.3.8/glfw-3.3.8.bin.WIN64.zip",

@@ -1,11 +1,13 @@
 WIN32_DEFINES = [
     "_GLFW_WIN32",
+    "UNICODE",
+    "_UNICODE",
 ]
 
 WIN32_HDRS = [
     "src/win32_joystick.h",
     "src/win32_platform.h",
-    "src/wgl_context.h", 
+    "src/wgl_context.h",
 ]
 
 WIN32_SRCS = [
@@ -35,6 +37,7 @@ LINUX_HDRS = [
     "src/posix_thread.h",
     "src/posix_time.h",
     "src/x11_platform.h",
+    "src/xkb_unicode.h",
 ]
 
 LINUX_SRCS = [
@@ -45,6 +48,7 @@ LINUX_SRCS = [
     "src/x11_init.c",
     "src/x11_monitor.c",
     "src/x11_window.c",
+    "src/xkb_unicode.c",
 ]
 
 LINUX_LINKOPTS = []
@@ -58,11 +62,10 @@ cc_library(
         "src/internal.h",
         "src/osmesa_context.h",
         "src/mappings.h",
-        "src/xkb_unicode.h",
     ] + select({
-		"@bazel_tools//src/conditions:windows": WIN32_HDRS,
-		"@bazel_tools//src/conditions:linux_x86_64": LINUX_HDRS,
-	}),
+        "@bazel_tools//src/conditions:windows": WIN32_HDRS,
+        "@bazel_tools//src/conditions:linux_x86_64": LINUX_HDRS,
+    }),
     srcs = [
         "src/context.c",
         "src/egl_context.c",
@@ -72,15 +75,14 @@ cc_library(
         "src/monitor.c",
         "src/vulkan.c",
         "src/window.c",
-        "src/xkb_unicode.c",
     ] + select({
-		"@bazel_tools//src/conditions:windows": WIN32_SRCS,
-		"@bazel_tools//src/conditions:linux_x86_64": LINUX_SRCS,
-	}),
+        "@bazel_tools//src/conditions:windows": WIN32_SRCS,
+        "@bazel_tools//src/conditions:linux_x86_64": LINUX_SRCS,
+    }),
     defines = select({
-		"@bazel_tools//src/conditions:windows": WIN32_DEFINES,
-		"@bazel_tools//src/conditions:linux_x86_64": LINUX_DEFINES,
-	}),
+        "@bazel_tools//src/conditions:windows": WIN32_DEFINES,
+        "@bazel_tools//src/conditions:linux_x86_64": LINUX_DEFINES,
+    }),
 )
 
 cc_library(
@@ -90,9 +92,9 @@ cc_library(
         "include/GLFW/glfw3native.h",
     ],
     linkopts = select({
-		"@bazel_tools//src/conditions:windows": WIN32_LINKOPTS,
-		"@bazel_tools//src/conditions:linux_x86_64": LINUX_LINKOPTS,
-	}),
+        "@bazel_tools//src/conditions:windows": WIN32_LINKOPTS,
+        "@bazel_tools//src/conditions:linux_x86_64": LINUX_LINKOPTS,
+    }),
     deps = [":glfw_src"],
     strip_include_prefix = "include",
     visibility = ["//visibility:public"],
