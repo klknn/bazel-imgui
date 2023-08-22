@@ -13,6 +13,7 @@ http_archive(
     url = "https://github.com/glfw/glfw/releases/download/3.3.8/glfw-3.3.8.bin.MACOS.zip",
     strip_prefix = "glfw-3.3.8.bin.MACOS",
     build_file = "@//third_party:BUILD.glfw",
+    sha256 = "dc1fc3d3e7763b9de66f7cbb86c4ba3a82118441a15f64045a61cfcdedda88d2",
 )
 
 # In windows, you can use this instead of `glfw_src`.
@@ -29,7 +30,8 @@ http_archive(
     name = "glfw_src",
     url = "https://github.com/glfw/glfw/releases/download/3.3.8/glfw-3.3.8.zip",
     strip_prefix = "glfw-3.3.8",
-    build_file = "//third_party:BUILD.glfw_src"
+    build_file = "//third_party:BUILD.glfw_src",
+    sha256 = "4d025083cc4a3dd1f91ab9b9ba4f5807193823e565a5bcf4be202669d9911ea6",
 )
 
 # In linux, you can use this instead of `glfw_src` after `apt install libglfw3-dev`.
