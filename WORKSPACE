@@ -28,7 +28,8 @@ http_archive(
     name = "glfw_src",
     url = "https://github.com/glfw/glfw/releases/download/3.3.8/glfw-3.3.8.zip",
     strip_prefix = "glfw-3.3.8",
-    build_file = "//third_party:BUILD.glfw_src"
+    build_file = "//third_party:BUILD.glfw_src",
+    sha256 = "4d025083cc4a3dd1f91ab9b9ba4f5807193823e565a5bcf4be202669d9911ea6",
 )
 
 # In linux, you can use this instead of `glfw_src` after `apt install libglfw3-dev`.
