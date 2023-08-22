@@ -1,0 +1,12 @@
+*
+
+!third_party/
+!BUILD
+!BUILD.*
+!WORKSPACE
+!WORKSPACE.*
+!*.md
+!*.cpp
+!.gitignore
+
+*~

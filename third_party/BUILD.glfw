@@ -1,0 +1,19 @@
+cc_import(
+    name = "glfw_macos_libs",
+    static_library = "lib-universal/libglfw3.a",
+    shared_library = "lib-universal/libglfw.3.dylib",
+)
+
+cc_library(
+    name = "glfw_macos",
+    hdrs = glob(["include/GLFW/*.h"]),
+    linkopts = [
+        "-framework OpenGL",
+        "-framework Cocoa",
+        "-framework IOKit",
+        "-framework CoreVideo",
+    ],
+    strip_include_prefix = "include",
+    deps = [":glfw_macos_libs"],
+    visibility = ["//visibility:public"],
+)

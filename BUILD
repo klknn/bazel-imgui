@@ -47,3 +47,14 @@ cc_binary(
         "@imgui//:backends_opengl3",
     ],
 )
+
+cc_binary(
+    name = "example_glfw_opengl3",
+    srcs = ["example_glfw_opengl3.cpp"],
+    deps = [
+        "@glfw_macos//:glfw_macos",
+        "@imgui//:core",
+        "@imgui//:backends_glfw",
+        "@imgui//:backends_opengl3",
+    ],
+)

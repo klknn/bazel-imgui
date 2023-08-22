@@ -6,6 +6,17 @@ cc_library(
 )
 
 cc_library(
+    name = "backends_glfw",
+    hdrs = ["backends/imgui_impl_glfw.h"],
+    srcs = ["backends/imgui_impl_glfw.cpp"],
+    strip_include_prefix = "backends",
+    deps = [":core"] + select({
+        "@platforms//os:osx": ["@glfw_macos//:glfw_macos"],
+    }),
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
     name = "backends_win32",
     hdrs = ["backends/imgui_impl_win32.h"],
     srcs = ["backends/imgui_impl_win32.cpp"],
@@ -63,6 +74,10 @@ cc_library(
     srcs = ["backends/imgui_impl_opengl3.cpp"],
     strip_include_prefix = "backends",
     deps = [":core"],
-    linkopts = ["opengl32.lib"],
+    linkopts = select({
+        "@platforms//os:windows": ["opengl32.lib"],
+        "@platforms//os:osx": ["-framework OpenGL"],
+    }),
+
     visibility = ["//visibility:public"],
 )
